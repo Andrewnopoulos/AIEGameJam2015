@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RippleScript : MonoBehaviour {
+public class RippleScript : MonoBehaviour 
+{
 
     public GameObject parent;
 
@@ -64,9 +65,11 @@ public class RippleScript : MonoBehaviour {
 
 			Renderer r = gameObject.GetComponent<Renderer> ();
 
-            float alpha = MaxScaleValue - (additionalScaleValue * (MaxScaleValue - 1.0f));
+            //float alpha = MaxScaleValue - (additionalScaleValue * (MaxScaleValue - 1.0f));
 
-            r.material.color = new Color(actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, alpha * 2);
+            float alpha = 1 - (additionalScaleValue / MaxScaleValue);
+
+            r.material.color = new Color(actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, alpha);
 
             //r.material.color = new Color (actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, parent.GetComponent<StartNodeScript> ().RippleLifetime - currentLifetime);
 
