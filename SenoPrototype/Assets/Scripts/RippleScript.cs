@@ -66,7 +66,7 @@ public class RippleScript : MonoBehaviour {
 
             float alpha = MaxScaleValue - (additionalScaleValue * (MaxScaleValue - 1.0f));
 
-            r.material.color = new Color(actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, alpha);
+            r.material.color = new Color(actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, alpha * 2);
 
             //r.material.color = new Color (actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, parent.GetComponent<StartNodeScript> ().RippleLifetime - currentLifetime);
 
