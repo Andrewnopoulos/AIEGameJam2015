@@ -38,7 +38,17 @@ public class RippleScript : MonoBehaviour {
     {
         return rippleColour;
     }
+
+    public void SetParent(GameObject daddy)
+    {
+        parent = daddy;
+    }
 	
+    public GameObject GetParent()
+    {
+        return parent;
+    }
+
 	// Update is called once per frame
 	void Update () {
 
@@ -49,16 +59,22 @@ public class RippleScript : MonoBehaviour {
             transform.localScale += new Vector3(currentLifetime, currentLifetime, 0) * ScalingSpeed;
 
             Renderer r = gameObject.GetComponent<Renderer>();
-            r.material.color = new Color(actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, 1.4f - currentLifetime);
+            r.material.color = new Color(actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, parent.GetComponent<StartNodeScript>().RippleLifetime - currentLifetime);
 
             if (currentLifetime > lifetime)
             {
-                active = false;
-                transform.localScale = startingScale;
-                currentLifetime = 0.0f;
+                DeActivate();
             }
         }
 	}
+
+    public void DeActivate()
+    {
+        active = false;
+        transform.localScale = startingScale;
+        currentLifetime = 0.0f;
+        parent.GetComponent<StartNodeScript>().DisableRipple();
+    }
 
     public void Activate()
     {
