@@ -5,13 +5,13 @@ public class RippleScript : MonoBehaviour {
 
     public GameObject parent;
 
-    public float lifetime = 1.0f;
+    public float MaxScaleValue = 2.0f;
 
     public float ScalingSpeed = 0.1f;
 
     public bool active = false;
 
-    float currentLifetime = 0.0f;
+    float additionalScaleValue = 0.0f;
 
     private Color actualRippleColour;
 
@@ -58,16 +58,23 @@ public class RippleScript : MonoBehaviour {
 				gameObject.GetComponent<Renderer>().enabled = true;
 			}
 
-			currentLifetime += Time.deltaTime;
+			additionalScaleValue += Time.deltaTime;
 
-			transform.localScale += new Vector3 (currentLifetime, currentLifetime, 0) * ScalingSpeed;
+			transform.localScale += new Vector3 (additionalScaleValue, additionalScaleValue, 0) * ScalingSpeed;
 
 			Renderer r = gameObject.GetComponent<Renderer> ();
-			r.material.color = new Color (actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, parent.GetComponent<StartNodeScript> ().RippleLifetime - currentLifetime);
 
-			if (currentLifetime > lifetime) {
+            float alpha = MaxScaleValue - (additionalScaleValue * (MaxScaleValue - 1.0f));
+
+            r.material.color = new Color(actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, alpha);
+
+            //r.material.color = new Color (actualRippleColour.r, actualRippleColour.g, actualRippleColour.b, parent.GetComponent<StartNodeScript> ().RippleLifetime - currentLifetime);
+
+            if (additionalScaleValue > MaxScaleValue)
+            {
 				DeActivate ();
 			}
+
 		} else {
 			if (gameObject.GetComponent<Renderer>().enabled == true)
 				gameObject.GetComponent<Renderer>().enabled = false;
@@ -78,7 +85,7 @@ public class RippleScript : MonoBehaviour {
     {
         active = false;
         transform.localScale = startingScale;
-        currentLifetime = 0.0f;
+        additionalScaleValue = 0;
         parent.GetComponent<StartNodeScript>().DisableRipple();
     }
 

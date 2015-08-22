@@ -19,7 +19,7 @@ public class StartNodeScript : MonoBehaviour {
     static Color NodeOrange = new Color(1.0f, 0.6f, 0.0f) * 0.9f;
 
     public float RippleCooldown = 2.5f;
-    public float RippleLifetime = 1.0f;
+    public float RippleMaxScaleValue = 2.0f;
     public float RippleSpeed = 1.0f;
 
     public int numberOfRipples = 1;
@@ -107,8 +107,8 @@ public class StartNodeScript : MonoBehaviour {
 
             RippleScript script = ripple.GetComponent<RippleScript>();
             script.SetParent(gameObject);
-            script.lifetime = RippleLifetime;
             script.ScalingSpeed = RippleSpeed;
+            script.MaxScaleValue = RippleMaxScaleValue;
             script.SetColour(actualNodeColour);
         }
 
@@ -367,7 +367,6 @@ public class StartNodeScript : MonoBehaviour {
                         break;
                     }
                 }
-
                 currentCooldown = RippleCooldown;
             }
         }
