@@ -60,6 +60,10 @@ public class StartNodeScript : MonoBehaviour {
     private bool[] colourActivations = new bool[6];
     private float[] colourCooldowns = new float[6];
 
+    public bool moveAble = false;
+
+    private bool selected = false;
+
 	// Use this for initialization
 	void Start () {
         for (int i = 0; i < 6; i++)
@@ -184,6 +188,33 @@ public class StartNodeScript : MonoBehaviour {
                     {
                         ActivateRipple();
                     }
+                }
+            }
+        }
+
+        if (moveAble)
+        {
+            if (Input.touchCount > 0)
+            {
+                if (Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    RaycastHit hit = new RaycastHit();
+
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        if (hit.collider.gameObject == gameObject)
+                        {
+                            selected = true;
+                        }
+                    }
+                }
+                else if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                {
+                    Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
+
+                    transform.Translate(-touchDeltaPosition.x, -touchDeltaPosition.y, 0);
                 }
             }
         }
@@ -341,6 +372,8 @@ public class StartNodeScript : MonoBehaviour {
     {
         if (isEndNode)
         {
+            gameObject.GetComponent<AudioSource>().Play();
+
             if (nodeColour == NodeColour.WHITE)
             {
                 IncrementWinningRippleHits();
@@ -362,6 +395,8 @@ public class StartNodeScript : MonoBehaviour {
                 {
                     if (!scripts[i].active)
                     {
+                        //gameObject.GetComponent<AudioSource>().pitch += Random.Range(-0.02f, 0.02f);
+                        gameObject.GetComponent<AudioSource>().Play();
                         scripts[i].Activate();
                         activeRipples++;
                         break;
