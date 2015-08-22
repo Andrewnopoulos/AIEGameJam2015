@@ -62,7 +62,7 @@ public class StartNodeScript : MonoBehaviour {
 
     public bool moveAble = false;
 
-    private bool selected = false;
+    public bool selected = false;
 
     public float speed = 0.3f;
 
@@ -196,34 +196,33 @@ public class StartNodeScript : MonoBehaviour {
 
         if (moveAble)
         {
-            if (Input.touchCount > 0)
+            if (Input.GetMouseButtonDown(0))
             {
-                if (Input.GetTouch(0).phase == TouchPhase.Began)
+                RaycastHit hit = new RaycastHit();
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out hit))
                 {
-                    RaycastHit hit = new RaycastHit();
-
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                    if (Physics.Raycast(ray, out hit))
+                    if (hit.collider.gameObject == gameObject)
                     {
-                        if (hit.collider.gameObject == gameObject)
-                        {
-                            selected = true;
-                        }
+                        selected = true;
                     }
                 }
-                else if (Input.GetTouch(0).phase == TouchPhase.Moved)
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                if (selected)
                 {
-                    if (selected)
-                    {
-                        Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
-
-                        gameObject.transform.Translate(touchDeltaPosition.x * speed, touchDeltaPosition.y * speed, 0);
-                    }
-                }else if (Input.GetTouch(0).phase == TouchPhase.Ended)
-                {
-                    selected = false;
+                    Vector3 mousePos = Input.mousePosition;
+                    mousePos.z = 10.0f;
+                    Vector3 touchDeltaPosition = Camera.main.ScreenToWorldPoint(mousePos);
+                    gameObject.transform.position = new Vector3(touchDeltaPosition.x, touchDeltaPosition.y, 0);
                 }
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                selected = false;
             }
         }
     }
