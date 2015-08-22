@@ -288,40 +288,35 @@ public class StartNodeScript : MonoBehaviour {
 
     void UpdateColour()
     {
-        Renderer r = gameObject.GetComponent<Renderer>();
+		if (currentWinColourCooldown > 0) {
+			currentWinColourCooldown -= Time.deltaTime;
+			for (int i = 0; i < gameObject.GetComponentsInChildren<Renderer>().Length; ++i) {
+				gameObject.GetComponentsInChildren<Renderer>()[i].material.color = actualNodeColour + actualNodeColour * currentWinColourCooldown * 3;
+			}
+			if (currentWinColourCooldown < 0) {
+				currentWinColourCooldown = 0.0f;
+			}
+		} else {
+			if (disabled) {
+				//r.material.color = Color.gray;
+				for (int i = 0; i < gameObject.GetComponentsInChildren<Renderer>().Length; ++i) {
+					gameObject.GetComponentsInChildren<Renderer>()[i].material.color = actualNodeColour * 0.5f;
+				}
+			} else {
+				for (int i = 0; i < gameObject.GetComponentsInChildren<Renderer>().Length; ++i) {
+					gameObject.GetComponentsInChildren<Renderer>()[i].material.color = actualNodeColour;
+				}
+			}
 
-        if (currentWinColourCooldown > 0)
-        {
-            currentWinColourCooldown -= Time.deltaTime;
-
-            r.material.color = actualNodeColour + actualNodeColour * currentWinColourCooldown * 3;
-
-            if (currentWinColourCooldown < 0)
-            {
-                currentWinColourCooldown = 0.0f;
-            }
-        }
-        else
-        {
-            if (disabled)
-            {
-                //r.material.color = Color.gray;
-                r.material.color = actualNodeColour * 0.5f;
-            }
-            else
-            {
-                r.material.color = actualNodeColour;
-            }
-
-            if (winState)
-            {
-                if (isEndNode)
-                {
-                    currentWinColourCooldown = winColourCooldown;
-                    r.material.color = actualNodeColour * 3;
-                }
-            }
-        }
+			if (winState) {
+				if (isEndNode) {
+					currentWinColourCooldown = winColourCooldown;
+					for (int i = 0; i < gameObject.GetComponentsInChildren<Renderer>().Length; ++i) {
+						gameObject.GetComponentsInChildren<Renderer>()[i].material.color = actualNodeColour * 3;
+					}
+				}
+			}
+		}
     }
        
     void OnTriggerEnter(Collider other)
