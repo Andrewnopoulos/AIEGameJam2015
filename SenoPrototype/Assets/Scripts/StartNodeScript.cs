@@ -207,6 +207,13 @@ public class StartNodeScript : MonoBehaviour {
                     if (hit.collider.gameObject == gameObject)
                     {
                         selected = true;
+
+                        RippleScript[] scripts = gameObject.GetComponentsInChildren<RippleScript>();
+
+                        for (int i = 0; i < scripts.Length; i++)
+                        {
+                            scripts[i].DeActivate();
+                        }
                     }
                 }
             }
@@ -376,39 +383,43 @@ public class StartNodeScript : MonoBehaviour {
 
     public void ActivateRipple(NodeColour rippleInputColour)
     {
-        if (isEndNode)
+        // if you're not currently moving a node, then ripples will activate things
+        if (!manager.GetComponent<GameManager>().IsMovingANode())
         {
-            gameObject.GetComponent<AudioSource>().Play();
-
-            if (nodeColour == NodeColour.WHITE)
+            if (isEndNode)
             {
-                IncrementWinningRippleHits();
-            }
-            else
-            {
-                ColouredEndInput(rippleInputColour);
-            }
-        }
-        else if (/*currentCooldown < 0 && */ !disabled)
-        {
-            if (rippleInputColour == nodeColour || rippleInputColour == NodeColour.WHITE)
-            {
-                currentCooldown = RippleCooldown;
+                gameObject.GetComponent<AudioSource>().Play();
 
-                RippleScript[] scripts = gameObject.GetComponentsInChildren<RippleScript>();
-
-                for (int i = 0; i < scripts.Length; i++)
+                if (nodeColour == NodeColour.WHITE)
                 {
-                    if (!scripts[i].active)
-                    {
-                        //gameObject.GetComponent<AudioSource>().pitch += Random.Range(-0.02f, 0.02f);
-                        gameObject.GetComponent<AudioSource>().Play();
-                        scripts[i].Activate();
-                        activeRipples++;
-                        break;
-                    }
+                    IncrementWinningRippleHits();
                 }
-                currentCooldown = RippleCooldown;
+                else
+                {
+                    ColouredEndInput(rippleInputColour);
+                }
+            }
+            else if (/*currentCooldown < 0 && */ !disabled)
+            {
+                if (rippleInputColour == nodeColour || rippleInputColour == NodeColour.WHITE)
+                {
+                    currentCooldown = RippleCooldown;
+
+                    RippleScript[] scripts = gameObject.GetComponentsInChildren<RippleScript>();
+
+                    for (int i = 0; i < scripts.Length; i++)
+                    {
+                        if (!scripts[i].active)
+                        {
+                            //gameObject.GetComponent<AudioSource>().pitch += Random.Range(-0.02f, 0.02f);
+                            gameObject.GetComponent<AudioSource>().Play();
+                            scripts[i].Activate();
+                            activeRipples++;
+                            break;
+                        }
+                    }
+                    currentCooldown = RippleCooldown;
+                }
             }
         }
     }

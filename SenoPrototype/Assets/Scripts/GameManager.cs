@@ -12,20 +12,35 @@ public class GameManager : MonoBehaviour {
 
 	public Canvas canvas;
 
+    private bool movingANode;
+
 	// Use this for initialization
 	void Start () {
 	    Nodes = new List<GameObject>();
 	}
+
+    public bool IsMovingANode()
+    {
+        return movingANode;
+    }
 	
 	// Update is called once per frame
 	void Update () {
         win = true;
+
+        movingANode = false;
+
 	    foreach (GameObject node in Nodes)
         {
             StartNodeScript script = node.GetComponent<StartNodeScript>();
             if (script.isEndNode && !script.winState)
             {
                 win = false;
+            }
+
+            if (script.selected)
+            {
+                movingANode = true;
             }
         }
 
