@@ -22,6 +22,10 @@ public class StartNodeScript : MonoBehaviour {
     public float RippleLifetime = 1.0f;
     public float RippleSpeed = 1.0f;
 
+    public int numberOfRipples = 1;
+
+    private int activeRipples = 0;
+
     public NodeColour nodeColour = NodeColour.WHITE;
 
     private Color actualNodeColour;
@@ -29,8 +33,6 @@ public class StartNodeScript : MonoBehaviour {
     public bool isStartNode = false;
     public bool isEndNode = false;
     public int WinningRipplesNeeded = 1;
-
-    public GameObject RippleObject;
 
     private float currentCooldown = 0;
 
@@ -45,6 +47,8 @@ public class StartNodeScript : MonoBehaviour {
 
     public GameObject manager;
 
+    public GameObject rippleTemplate;
+
     public bool disabled = false;
 
     private bool isAdded = false;
@@ -58,10 +62,6 @@ public class StartNodeScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        RippleScript script = RippleObject.GetComponent<RippleScript>();
-        script.lifetime = RippleLifetime;
-        script.ScalingSpeed = RippleSpeed;
-
         for (int i = 0; i < 6; i++)
         {
             colourActivations[i] = false;
@@ -99,8 +99,30 @@ public class StartNodeScript : MonoBehaviour {
                 break;
         }
 
-        RippleScript script = RippleObject.GetComponent<RippleScript>();
-        script.SetColour(actualNodeColour);
+        // initialize ripples
+        for (int i = 0; i < numberOfRipples; i++)
+        {
+            GameObject ripple = (GameObject)Instantiate(rippleTemplate, transform.position, transform.rotation);
+            ripple.transform.parent = this.gameObject.transform;
+
+            RippleScript script = ripple.GetComponent<RippleScript>();
+            script.SetParent(gameObject);
+            script.lifetime = RippleLifetime;
+            script.ScalingSpeed = RippleSpeed;
+            script.SetColour(actualNodeColour);
+        }
+
+        //GameObject ripple = (GameObject)Instantiate(rippleTemplate, transform.position, transform.rotation);
+        //ripple.transform.parent = this.gameObject.transform;
+
+        //RippleScript script = ripple.GetComponent<RippleScript>();
+        //script.lifetime = RippleLifetime;
+        //script.ScalingSpeed = RippleSpeed;
+
+        //gameObject.GetComponentsInChildren<RippleScript>();
+
+        //RippleScript script = RippleObject.GetComponent<RippleScript>();
+        //script.SetColour(actualNodeColour);
 
         isAdded = true;
     }
@@ -116,7 +138,7 @@ public class StartNodeScript : MonoBehaviour {
 
         currentCooldown -= Time.deltaTime;
 
-        disabled = currentCooldown > 0;
+        disabled = (activeRipples == numberOfRipples);
 
         TakeInput();
 
@@ -165,6 +187,11 @@ public class StartNodeScript : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void DisableRipple()
+    {
+        activeRipples--;
     }
 
     /// <summary>
@@ -299,7 +326,12 @@ public class StartNodeScript : MonoBehaviour {
        
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "Ripple" && !isStartNode)
+        if (other.gameObject.GetComponent<RippleScript>().GetParent() == gameObject)
+        {
+            return;
+        }
+
+        if (other.gameObject.name == "Ripple(Clone)" && !isStartNode)
         {
             ActivateRipple(other.gameObject.GetComponent<RippleScript>().GetColour());
         }
@@ -323,13 +355,24 @@ public class StartNodeScript : MonoBehaviour {
                 ColouredEndInput(rippleInputColour);
             }
         }
-        else if (currentCooldown < 0 && !disabled)
+        else if (/*currentCooldown < 0 && */ !disabled)
         {
             if (rippleInputColour == nodeColour || rippleInputColour == NodeColour.WHITE)
             {
                 currentCooldown = RippleCooldown;
-                RippleScript script = RippleObject.GetComponent<RippleScript>();
-                script.Activate();
+
+                RippleScript[] scripts = gameObject.GetComponentsInChildren<RippleScript>();
+
+                for (int i = 0; i < scripts.Length; i++)
+                {
+                    if (!scripts[i].active)
+                    {
+                        scripts[i].Activate();
+                        activeRipples++;
+                        break;
+                    }
+                }
+
                 currentCooldown = RippleCooldown;
             }
         }
