@@ -132,7 +132,17 @@ public class StartNodeScript : MonoBehaviour {
                 {
                     if (Input.GetTouch(i).phase == TouchPhase.Began)
                     {
-                        ActivateRipple();
+                        RaycastHit hit = new RaycastHit();
+
+                        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
+
+                        if (Physics.Raycast(ray, out hit))
+                        {
+                            if (hit.collider.gameObject == gameObject)
+                            {
+                                ActivateRipple();
+                            }
+                        }
                     }
                 }
             }
