@@ -64,6 +64,8 @@ public class StartNodeScript : MonoBehaviour {
 
     private bool selected = false;
 
+    public float speed = 0.3f;
+
 	// Use this for initialization
 	void Start () {
         for (int i = 0; i < 6; i++)
@@ -212,9 +214,15 @@ public class StartNodeScript : MonoBehaviour {
                 }
                 else if (Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
-                    Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
+                    if (selected)
+                    {
+                        Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
 
-                    transform.Translate(-touchDeltaPosition.x, -touchDeltaPosition.y, 0);
+                        gameObject.transform.Translate(-touchDeltaPosition.x * speed, -touchDeltaPosition.y * speed, 0);
+                    }
+                }else if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                {
+                    selected = false;
                 }
             }
         }
@@ -308,7 +316,6 @@ public class StartNodeScript : MonoBehaviour {
                     }
                     break;
             }
-
         }
     }
 
