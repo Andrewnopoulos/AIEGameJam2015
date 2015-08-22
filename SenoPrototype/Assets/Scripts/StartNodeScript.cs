@@ -10,13 +10,13 @@ public class StartNodeScript : MonoBehaviour {
 
     static Color NodeWhite = Color.white;
 
-    static Color NodeYellow = Color.yellow;
-    static Color NodeRed = Color.red;
-    static Color NodeBlue = Color.blue;
+    static Color NodeYellow = Color.yellow * 0.8f;
+    static Color NodeRed = Color.red * 0.8f;
+    static Color NodeBlue = Color.blue * 0.8f;
 
-    static Color NodeGreen = Color.green;
-    static Color NodePurple = new Color(0.6f, 0.0f, 1.0f);
-    static Color NodeOrange = new Color(1.0f, 0.6f, 0.0f);
+    static Color NodeGreen = Color.green * 0.8f;
+    static Color NodePurple = new Color(0.6f, 0.0f, 1.0f) * 0.9f;
+    static Color NodeOrange = new Color(1.0f, 0.6f, 0.0f) * 0.9f;
 
     public float RippleCooldown = 2.5f;
     public float RippleLifetime = 1.0f;
@@ -48,6 +48,9 @@ public class StartNodeScript : MonoBehaviour {
     public bool disabled = false;
 
     private bool isAdded = false;
+
+    private float winColourCooldown = 1.0f;
+    private float currentWinColourCooldown = 0.0f;
 
     // is activated and cooldown value for each colour
     private bool[] colourActivations = new bool[6];
@@ -115,11 +118,11 @@ public class StartNodeScript : MonoBehaviour {
 
         disabled = currentCooldown > 0;
 
-        UpdateColour();
-
         TakeInput();
 
         UpdateEndNode();
+
+        UpdateColour();
 	}
 
     void TakeInput()
@@ -182,7 +185,7 @@ public class StartNodeScript : MonoBehaviour {
                 currentWinCount = 0;
             }
 
-            if (overallCurrentWinCooldown < 0)
+            if (overallCurrentWinCooldown < 0 && nodeColour == NodeColour.WHITE)
             {
                 winState = false;
                 overallCurrentWinCooldown = 0;
@@ -259,22 +262,41 @@ public class StartNodeScript : MonoBehaviour {
     void UpdateColour()
     {
         Renderer r = gameObject.GetComponent<Renderer>();
-        if (disabled)
+
+        if (currentWinColourCooldown > 0)
         {
-            //r.material.color = Color.gray;
-            r.material.color = actualNodeColour * 0.5f;
+            currentWinColourCooldown -= Time.deltaTime;
+
+            r.material.color = actualNodeColour + actualNodeColour * currentWinColourCooldown * 3;
+
+            if (currentWinColourCooldown < 0)
+            {
+                currentWinColourCooldown = 0.0f;
+            }
         }
         else
         {
-            r.material.color = actualNodeColour;
-        }
+            if (disabled)
+            {
+                //r.material.color = Color.gray;
+                r.material.color = actualNodeColour * 0.5f;
+            }
+            else
+            {
+                r.material.color = actualNodeColour;
+            }
 
-        if (isEndNode && winState)
-        {
-            r.material.color = Color.black;
+            if (winState)
+            {
+                if (isEndNode)
+                {
+                    currentWinColourCooldown = winColourCooldown;
+                    r.material.color = actualNodeColour * 3;
+                }
+            }
         }
     }
-
+       
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "Ripple" && !isStartNode)
