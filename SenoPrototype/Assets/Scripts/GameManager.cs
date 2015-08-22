@@ -8,10 +8,9 @@ public class GameManager : MonoBehaviour {
 
     bool win = false;
 
-    public string textureName = "_MainTex";
-    public Vector2 uvAnimationRate = new Vector2(0.5f, 0.0f);
+	public float scrollSpeed;
 
-    Vector2 uvOffset = Vector2.zero;
+	public Canvas canvas;
 
 	// Use this for initialization
 	void Start () {
@@ -32,23 +31,23 @@ public class GameManager : MonoBehaviour {
 
         if (win)
         {
-            Debug.Log("Winner winner, chicken dinner");
+            //Debug.Log("Winner winner, chicken dinner");
             foreach (GameObject node in Nodes)
             {
                 StartNodeScript script = node.GetComponent<StartNodeScript>();
                 script.ResetWinState();
             }
+
+			canvas.enabled = true;
         }
 
-       // UpdateTexture();
+        UpdateTexture();
 	}
 
     void UpdateTexture()
     {
-        uvOffset += (uvAnimationRate * Time.deltaTime);
-        Renderer renderer = gameObject.GetComponent<Renderer>();
-
-        renderer.materials[0].SetTextureOffset(textureName, uvOffset);
+		float offset = Time.time * scrollSpeed;
+		gameObject.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(offset, offset/2);
     }
 
     public void AddNode(GameObject node)
