@@ -8,6 +8,11 @@ public class GameManager : MonoBehaviour {
 
     bool win = false;
 
+    public string textureName = "_MainTex";
+    public Vector2 uvAnimationRate = new Vector2(0.5f, 0.0f);
+
+    Vector2 uvOffset = Vector2.zero;
+
 	// Use this for initialization
 	void Start () {
 	    Nodes = new List<GameObject>();
@@ -34,7 +39,17 @@ public class GameManager : MonoBehaviour {
                 script.ResetWinState();
             }
         }
+
+       // UpdateTexture();
 	}
+
+    void UpdateTexture()
+    {
+        uvOffset += (uvAnimationRate * Time.deltaTime);
+        Renderer renderer = gameObject.GetComponent<Renderer>();
+
+        renderer.materials[0].SetTextureOffset(textureName, uvOffset);
+    }
 
     public void AddNode(GameObject node)
     {
