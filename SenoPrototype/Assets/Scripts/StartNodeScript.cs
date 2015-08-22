@@ -218,7 +218,7 @@ public class StartNodeScript : MonoBehaviour {
                     {
                         Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
 
-                        gameObject.transform.Translate(-touchDeltaPosition.x * speed, -touchDeltaPosition.y * speed, 0);
+                        gameObject.transform.Translate(touchDeltaPosition.x * speed, touchDeltaPosition.y * speed, 0);
                     }
                 }else if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
