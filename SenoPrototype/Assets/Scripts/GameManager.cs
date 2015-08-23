@@ -56,6 +56,11 @@ public class GameManager : MonoBehaviour {
 			canvas.enabled = true;
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            canvas.enabled = true;
+        }
+
         UpdateTexture();
 	}
 
