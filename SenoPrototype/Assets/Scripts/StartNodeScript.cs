@@ -55,6 +55,7 @@ public class StartNodeScript : MonoBehaviour {
     public GameObject manager;
 
     public GameObject rippleTemplate;
+	public GameObject fishTemplate;
 
     public bool disabled = false;
 
@@ -124,6 +125,15 @@ public class StartNodeScript : MonoBehaviour {
             script.MaxScaleValue = RippleMaxScaleValue;
             script.SetColour(actualNodeColour);
         }
+
+		// initialize koi
+		for (int i = 0; i < WinningRipplesNeeded; i++)
+		{
+			GameObject koi = (GameObject)Instantiate(fishTemplate, transform.position + new Vector3( 5 + (2 * i), 0, 0), transform.rotation);
+			koi.transform.parent = this.gameObject.transform;
+
+
+		}
 
         //GameObject ripple = (GameObject)Instantiate(rippleTemplate, transform.position, transform.rotation);
         //ripple.transform.parent = this.gameObject.transform;
