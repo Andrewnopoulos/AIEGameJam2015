@@ -61,7 +61,9 @@ public class RippleScript : MonoBehaviour
 
 			additionalScaleValue += Time.deltaTime;
 
-			transform.localScale += new Vector3 (additionalScaleValue, additionalScaleValue, 0) * ScalingSpeed;
+            Vector3 scale = transform.localScale;
+
+			transform.localScale = scale + new Vector3 (additionalScaleValue, additionalScaleValue, 0) * ScalingSpeed;
 
 			Renderer r = gameObject.GetComponent<Renderer> ();
 
@@ -75,7 +77,7 @@ public class RippleScript : MonoBehaviour
 
             if (additionalScaleValue > MaxScaleValue)
             {
-				DeActivate ();
+				DeActivate();
 			}
 
 		} else {
