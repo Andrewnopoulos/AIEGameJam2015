@@ -126,14 +126,18 @@ public class StartNodeScript : MonoBehaviour {
             script.SetColour(actualNodeColour);
         }
 
-		// initialize koi
-		for (int i = 0; i < WinningRipplesNeeded; i++)
-		{
-			GameObject koi = (GameObject)Instantiate(fishTemplate, transform.position + new Vector3( 5 + (2 * i), 0, 0), transform.rotation);
-			koi.transform.parent = this.gameObject.transform;
+        if (isEndNode)
+        {
+            // initialize koi
+            for (int i = 0; i < WinningRipplesNeeded; i++)
+            {
+                GameObject koi = (GameObject)Instantiate(fishTemplate, transform.position, transform.rotation);
+                koi.transform.parent = this.gameObject.transform;
 
-
-		}
+                FishScript fishy = koi.GetComponent<FishScript>();
+                fishy.FishInitialize(Random.Range(0, 360.0f), i % 2 == 0, i * 0.4f);
+            }
+        }
 
         //GameObject ripple = (GameObject)Instantiate(rippleTemplate, transform.position, transform.rotation);
         //ripple.transform.parent = this.gameObject.transform;
