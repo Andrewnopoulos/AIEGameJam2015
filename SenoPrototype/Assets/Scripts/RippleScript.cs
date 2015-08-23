@@ -94,10 +94,13 @@ public class RippleScript : MonoBehaviour
 
     public void Activate()
     {
-        active = true;
-        if (transform.localScale != startingScale)
+        if (!parent.GetComponent<StartNodeScript>().selected)
         {
-            transform.localScale = startingScale;
+            active = true;
+            if (transform.localScale != startingScale)
+            {
+                transform.localScale = startingScale;
+            }
         }
     }
 }
