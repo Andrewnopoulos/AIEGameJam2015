@@ -3,6 +3,8 @@ using System.Collections;
 
 public class koiScript : MonoBehaviour {
 
+    public float rotationAngle;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -20,6 +22,6 @@ public class koiScript : MonoBehaviour {
 
     public void TurnAround()
     {
-        gameObject.transform.Rotate(new Vector3(0, 0, 1), Time.deltaTime);
+        gameObject.transform.Rotate(new Vector3(0, 1, 0), rotationAngle);
     }
 }

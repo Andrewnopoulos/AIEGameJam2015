@@ -19,7 +19,7 @@ public class FishScript : MonoBehaviour {
         //gameObject.transform.localScale = new Vector3(transform.localScale.x + additionalRadius, transform.localScale.y, transform.localScale.z);
         koiScript fishTransform = gameObject.GetComponentInChildren<koiScript>();
         fishTransform.Shift(additionalRadius);
-        if (clockwise)
+        if (!clockwise)
         {
             fishTransform.TurnAround();
         }
@@ -27,9 +27,6 @@ public class FishScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //gameObject.transform.Rotate(new Vector3(0, 0, 1), speed * Time.deltaTime * (clockwise ? 1 : -1) );
-
-        koiScript fishTransform = gameObject.GetComponentInChildren<koiScript>();
-        fishTransform.TurnAround();
+        gameObject.transform.Rotate(new Vector3(0, 0, 1), speed * Time.deltaTime * (clockwise ? 1 : -1) );
 	}
 }
