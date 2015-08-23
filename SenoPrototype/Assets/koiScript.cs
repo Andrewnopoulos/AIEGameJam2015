@@ -3,7 +3,7 @@ using System.Collections;
 
 public class koiScript : MonoBehaviour {
 
-    public float rotationAngle;
+    public float rotationAngle = 90;
 
 	// Use this for initialization
 	void Start () {
