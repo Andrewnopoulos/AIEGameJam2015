@@ -153,6 +153,8 @@ public class StartNodeScript : MonoBehaviour {
 
         isAdded = true;
 
+        DetermineType();
+
 		//ChangeTheme (Theme.FOOD);
 
     }
@@ -176,6 +178,14 @@ public class StartNodeScript : MonoBehaviour {
 
         UpdateColour();
 	}
+
+    void DetermineType()
+    {
+        gameObject.GetComponentsInChildren<Renderer>()[0].enabled = isStartNode;
+        gameObject.GetComponentsInChildren<Renderer>()[1].enabled = isEndNode;
+
+        gameObject.GetComponentsInChildren<Renderer>()[2].enabled = !(isStartNode || isEndNode);
+    }
 	
 	void ChangeTheme(Theme themeType)
 	{
