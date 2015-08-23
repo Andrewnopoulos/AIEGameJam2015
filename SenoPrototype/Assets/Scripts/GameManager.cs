@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour {
             canvas.enabled = true;
         }
 
-        UpdateTexture();
+        //UpdateTexture();
 	}
 
     void UpdateTexture()
