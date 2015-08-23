@@ -135,7 +135,7 @@ public class StartNodeScript : MonoBehaviour {
                 koi.transform.parent = this.gameObject.transform;
 
                 FishScript fishy = koi.GetComponent<FishScript>();
-                fishy.FishInitialize(Random.Range(0, 360.0f), i % 2 == 0, i * 0.4f);
+                fishy.FishInitialize(Random.Range(0, 360.0f), i % 2 == 0, i * 0.24f);
             }
         }
 

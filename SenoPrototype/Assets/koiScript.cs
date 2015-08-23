@@ -17,4 +17,9 @@ public class koiScript : MonoBehaviour {
     {
         gameObject.transform.Translate(new Vector3(translation, 0, 0));
     }
+
+    public void TurnAround()
+    {
+        gameObject.transform.Rotate(new Vector3(0, 0, 1), Time.deltaTime);
+    }
 }
