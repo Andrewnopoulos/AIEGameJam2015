@@ -139,7 +139,7 @@ public class StartNodeScript : MonoBehaviour {
 
         isAdded = true;
 
-		ChangeTheme (Theme.SIMPLE);
+		//ChangeTheme (Theme.FOOD);
 
     }
 
@@ -174,6 +174,9 @@ public class StartNodeScript : MonoBehaviour {
 				gameObject.GetComponentsInChildren<Renderer>()[3].enabled = false;
 				gameObject.GetComponentsInChildren<Renderer>()[4].enabled = false;
 				gameObject.GetComponentsInChildren<Renderer>()[5].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[6].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[7].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[8].enabled = false;
 				
 				if (isStartNode)
 				{
@@ -198,6 +201,8 @@ public class StartNodeScript : MonoBehaviour {
 				manager.GetComponent<Renderer>().enabled = true;
 				manager.GetComponentsInParent<Renderer>()[0].enabled = true;
 				manager.GetComponentsInParent<Renderer>()[1].enabled = true;
+
+				//disable tablecloth
 				
 			}
 			else if (currentTheme == Theme.SIMPLE)
@@ -205,6 +210,9 @@ public class StartNodeScript : MonoBehaviour {
 				gameObject.GetComponentsInChildren<Renderer>()[0].enabled = false;
 				gameObject.GetComponentsInChildren<Renderer>()[1].enabled = false;
 				gameObject.GetComponentsInChildren<Renderer>()[2].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[6].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[7].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[8].enabled = false;
 				
 				if (isStartNode)
 				{
@@ -229,9 +237,45 @@ public class StartNodeScript : MonoBehaviour {
 				manager.GetComponent<Renderer>().enabled = false;
 				manager.GetComponentsInParent<Renderer>()[0].enabled = false;
 				manager.GetComponentsInParent<Renderer>()[1].enabled = false;
+
+				//disable tablecloth
 			}
-			else{
+			else
+			{
+				//disable zen
+				gameObject.GetComponentsInChildren<Renderer>()[0].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[1].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[2].enabled = false;
+				//disable simple
+				gameObject.GetComponentsInChildren<Renderer>()[3].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[4].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[5].enabled = false;
 				
+				if (isStartNode)
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[6].enabled = true;
+					gameObject.GetComponentsInChildren<Renderer>()[7].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[8].enabled = false;
+				}
+				else if (isEndNode)
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[6].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[7].enabled = true;
+					gameObject.GetComponentsInChildren<Renderer>()[8].enabled = false;
+				}
+				else
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[6].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[7].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[8].enabled = true;
+				}
+				
+				//disable pond
+				manager.GetComponent<Renderer>().enabled = false;
+				manager.GetComponentsInParent<Renderer>()[0].enabled = false;
+				manager.GetComponentsInParent<Renderer>()[1].enabled = false;
+
+				//enable tablecloth
 			}
 		
 		}
