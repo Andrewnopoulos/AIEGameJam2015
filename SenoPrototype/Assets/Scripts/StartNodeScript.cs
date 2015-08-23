@@ -6,6 +6,11 @@ public enum NodeColour
      BLUE = 0, YELLOW = 1, RED = 2, GREEN = 3, PURPLE = 4, ORANGE = 5, WHITE = 6
 }
 
+public enum Theme
+{
+	ZEN = 0, SIMPLE = 1, FOOD = 2
+}
+
 public class StartNodeScript : MonoBehaviour {
 
     static Color NodeWhite = Color.white;
@@ -44,6 +49,8 @@ public class StartNodeScript : MonoBehaviour {
 
     public float overallWinstateCooldown = 0.2f;
     private float overallCurrentWinCooldown = 0.0f;
+
+	public Theme currentTheme = Theme.ZEN;
 
     public GameObject manager;
 
@@ -131,8 +138,11 @@ public class StartNodeScript : MonoBehaviour {
         //script.SetColour(actualNodeColour);
 
         isAdded = true;
+
+		//ChangeTheme (Theme.FOOD);
+
     }
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -151,6 +161,124 @@ public class StartNodeScript : MonoBehaviour {
         UpdateEndNode();
 
         UpdateColour();
+	}
+	
+	void ChangeTheme(Theme themeType)
+	{
+		if (currentTheme != themeType)
+		{
+			currentTheme = themeType;
+			
+			if (currentTheme == Theme.ZEN)
+			{
+				gameObject.GetComponentsInChildren<Renderer>()[3].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[4].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[5].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[6].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[7].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[8].enabled = false;
+				
+				if (isStartNode)
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[0].enabled = true;
+					gameObject.GetComponentsInChildren<Renderer>()[1].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[2].enabled = false;
+				}
+				else if (isEndNode)
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[0].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[1].enabled = true;
+					gameObject.GetComponentsInChildren<Renderer>()[2].enabled = false;
+				}
+				else
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[0].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[1].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[2].enabled = true;
+				}
+
+				//activate pond
+				manager.GetComponent<Renderer>().enabled = true;
+				manager.GetComponentsInParent<Renderer>()[0].enabled = true;
+				manager.GetComponentsInParent<Renderer>()[1].enabled = true;
+
+				//disable tablecloth
+				
+			}
+			else if (currentTheme == Theme.SIMPLE)
+			{
+				gameObject.GetComponentsInChildren<Renderer>()[0].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[1].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[2].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[6].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[7].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[8].enabled = false;
+				
+				if (isStartNode)
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[3].enabled = true;
+					gameObject.GetComponentsInChildren<Renderer>()[4].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[5].enabled = false;
+				}
+				else if (isEndNode)
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[3].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[4].enabled = true;
+					gameObject.GetComponentsInChildren<Renderer>()[5].enabled = false;
+				}
+				else
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[3].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[4].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[5].enabled = true;
+				}
+
+				//disable pond
+				manager.GetComponent<Renderer>().enabled = false;
+				manager.GetComponentsInParent<Renderer>()[0].enabled = false;
+				manager.GetComponentsInParent<Renderer>()[1].enabled = false;
+
+				//disable tablecloth
+			}
+			else
+			{
+				//disable zen
+				gameObject.GetComponentsInChildren<Renderer>()[0].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[1].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[2].enabled = false;
+				//disable simple
+				gameObject.GetComponentsInChildren<Renderer>()[3].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[4].enabled = false;
+				gameObject.GetComponentsInChildren<Renderer>()[5].enabled = false;
+				
+				if (isStartNode)
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[6].enabled = true;
+					gameObject.GetComponentsInChildren<Renderer>()[7].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[8].enabled = false;
+				}
+				else if (isEndNode)
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[6].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[7].enabled = true;
+					gameObject.GetComponentsInChildren<Renderer>()[8].enabled = false;
+				}
+				else
+				{
+					gameObject.GetComponentsInChildren<Renderer>()[6].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[7].enabled = false;
+					gameObject.GetComponentsInChildren<Renderer>()[8].enabled = true;
+				}
+				
+				//disable pond
+				manager.GetComponent<Renderer>().enabled = false;
+				manager.GetComponentsInParent<Renderer>()[0].enabled = false;
+				manager.GetComponentsInParent<Renderer>()[1].enabled = false;
+
+				//enable tablecloth
+			}
+		
+		}
 	}
 
     void TakeInput()
