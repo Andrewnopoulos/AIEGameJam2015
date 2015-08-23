@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	    Nodes = new List<GameObject>();
+		win = false;
+		canvas.enabled = false;
 	}
 
     public bool IsMovingANode()
@@ -44,22 +46,15 @@ public class GameManager : MonoBehaviour {
             }
         }
 
-        if (win)
-        {
-            //Debug.Log("Winner winner, chicken dinner");
-            foreach (GameObject node in Nodes)
-            {
-                StartNodeScript script = node.GetComponent<StartNodeScript>();
-                script.ResetWinState();
-            }
+        if (win) {
+			//Debug.Log("Winner winner, chicken dinner");
+			foreach (GameObject node in Nodes) {
+				StartNodeScript script = node.GetComponent<StartNodeScript> ();
+				script.ResetWinState ();
+			}
 
 			canvas.enabled = true;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            canvas.enabled = true;
-        }
+		}
 
         //UpdateTexture();
 	}
